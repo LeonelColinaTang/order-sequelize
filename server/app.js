@@ -9,8 +9,6 @@ const { Band, Musician } = require('./db/models');
 app.use(express.json());
 
 
-// STEP 1: Order by one attribute
-// Get all bands, ordered by createdAt, latest first
 app.get('/bands/latest', async (req, res, next) => {
     const bands = await Band.findAll({
       order: [["createdAt", "DESC"]]
@@ -18,8 +16,6 @@ app.get('/bands/latest', async (req, res, next) => {
     res.json(bands);
 })
 
-// STEP 2: Order by multiple attributes
-// Get all musicians, ordered by last name, then first name, alphabetically
 app.get('/musicians/alphabetic', async (req, res, next) => {
     const musicians = await Musician.findAll({ 
         order: [['lastName','ASC'],['firstName','ASC']]
@@ -33,7 +29,7 @@ app.get('/musicians/alphabetic', async (req, res, next) => {
 app.get('/bands/alphabetic-musicians', async (req, res, next) => {
     const bands = await Band.findAll({ 
         include: { model: Musician }, 
-        // Your code here
+        order: [['name','ASC'],[Musician, 'lastName','ASC']]
     })
     res.json(bands);
 })
