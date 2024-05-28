@@ -1,23 +1,19 @@
-// Instantiate Express and the application - DO NOT MODIFY
 const express = require('express');
 const app = express();
 
-// Import environment variables in order to connect to database - DO NOT MODIFY
 require('dotenv').config();
 require('express-async-errors');
 
-// Import the models used in these routes - DO NOT MODIFY
 const { Band, Musician } = require('./db/models');
 
-// Express using json - DO NOT MODIFY
 app.use(express.json());
 
 
 // STEP 1: Order by one attribute
 // Get all bands, ordered by createdAt, latest first
 app.get('/bands/latest', async (req, res, next) => {
-    const bands = await Band.findAll({ 
-        // Your code here
+    const bands = await Band.findAll({
+      order: [["createdAt", "DESC"]]
     });
     res.json(bands);
 })
@@ -26,7 +22,7 @@ app.get('/bands/latest', async (req, res, next) => {
 // Get all musicians, ordered by last name, then first name, alphabetically
 app.get('/musicians/alphabetic', async (req, res, next) => {
     const musicians = await Musician.findAll({ 
-        // Your code here
+        order: [['lastName','ASC'],['firstName','ASC']]
     });
     res.json(musicians);
 })
